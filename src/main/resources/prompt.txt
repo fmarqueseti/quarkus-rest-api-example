@@ -1,0 +1,4 @@
+Generate an import.sql file containing 100 INSERT statements.
+Use PostgreSQL syntax and assume a function is available to generate UUIDs (e.g., gen_random_uuid()).
+Base the inserts on a Person entity, including all its respective fields.
+Ensure the data is realistic and varied, and that each record has a unique UUID.

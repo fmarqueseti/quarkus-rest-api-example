@@ -1,0 +1,88 @@
+{
+  "info": {
+    "_postman_id": "7dd3761f-9e4b-41d6-a913-e2a37cb5555b",
+    "name": "quarkus-rest-api-example",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18125267"
+  },
+  "item": [
+    {
+      "name": "findPersonById",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/people/b7b61e68-0ec6-4946-8452-ede70d37ccfc",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "people",
+            "b7b61e68-0ec6-4946-8452-ede70d37ccfc"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "createPerson",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Fábio Marques\",\n    \"email\": \"fmarques@fmarques.eti.br\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/people",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "people"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "listPeople",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/people/?page=0&size=5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "people",
+            ""
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

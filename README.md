@@ -1,81 +1,118 @@
-# crud
+# Quarkus REST API Example
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+A simple RESTful API for managing Person records, built with Quarkus framework.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## Features
+
+- RESTful CRUD operations on Person entities
+- Pagination support for listing records
+- UUID-based identification
+- OpenAPI/Swagger documentation
+- PostgreSQL database persistence
+
+## API Endpoints
+
+| Method | Path | Description |
+|--------|------|--------------|
+| POST | /people | Create a new person |
+| GET | /people | List all people (paginated) |
+| GET | /people/{id} | Get person by ID |
+| PUT | /people/{id} | Update a person |
+| DELETE | /people/{id} | Delete a person |
+
+### Query Parameters
+
+List endpoint supports pagination:
+- `page`: Page index (default: 0)
+- `size`: Page size (default: 20)
+
+### Example Request
+
+```json
+POST /people
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "birthDay": "1990-05-15"
+}
+```
+
+## Database Configuration
+
+This application uses PostgreSQL. Configure the datasource in `application.properties`:
+
+```properties
+quarkus.datasource.db-kind=postgresql
+quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:5432/yourdatabase
+quarkus.datasource.username=youruser
+quarkus.datasource.password=yourpassword
+```
+
+Ensure the UUID extension is available:
+```sql
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+```
 
 ## Running the application in dev mode
 
-You can run your application in dev mode that enables live coding using:
-
-```shell script
+```shell
 ./mvnw quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+> Quarkus Dev UI is available at <http://localhost:8080/q/dev/>
 
 ## Packaging and running the application
 
-The application can be packaged using:
-
-```shell script
+```shell
 ./mvnw package
+java -jar target/quarkus-app/quarkus-run.jar
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+### Build uber-jar
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
+```shell
 ./mvnw package -Dquarkus.package.jar.type=uber-jar
+java -jar target/crud-1.0.0-SNAPSHOT-runner.jar
 ```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
 ## Creating a native executable
 
-You can create a native executable using:
-
-```shell script
+```shell
 ./mvnw package -Dnative
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+Or build in a container (if GraalVM is not installed):
 
-```shell script
+```shell
 ./mvnw package -Dnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/crud-1.0.0-SNAPSHOT-runner`
+Run the native executable:
+```shell
+./target/crud-1.0.0-SNAPSHOT-runner
+```
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+## OpenAPI Documentation
 
-## Related Guides
+Access the Swagger UI at: <http://localhost:8080/q/swagger-ui>
 
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- Hibernate Validator ([guide](https://quarkus.io/guides/validation)): Validate object properties (field, getter) and method parameters for your beans (REST, CDI, Jakarta Persistence)
-- SmallRye OpenAPI ([guide](https://quarkus.io/guides/openapi-swaggerui)): Document your REST APIs with OpenAPI - comes with Swagger UI
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
+## Project Structure
 
-## Provided Code
+```
+src/main/java/br/eti/fmarques/
+├── application/
+│   └── PeopleResource.java    # REST endpoints
+├── entity/
+│   └── Person.java            # JPA entity
+└── repository/
+    └── EntityPeople.java      # Panache repository
+```
 
-### Hibernate ORM
+## Person Entity Fields
 
-Create your first JPA entity
-
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
-
-
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
-
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+| Field | Type | Constraints |
+|-------|------|--------------|
+| id | UUID | Auto-generated |
+| name | String | Required, 5-100 chars |
+| email | String | Required, valid email format |
+| birthDay | LocalDate | Must be in the past |
